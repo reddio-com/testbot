@@ -1,0 +1,3 @@
+[submodule "cairoVM/juno"]
+	path = cairoVM/juno
+	url = https://github.com/NethermindEth/juno.git
