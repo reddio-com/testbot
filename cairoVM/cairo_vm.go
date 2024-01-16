@@ -44,7 +44,7 @@ func (c *CairoVM) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*fel
 	if err != nil {
 		return nil, err
 	}
-	return &traces[0].ExecuteInvocation.CallerAddress, nil
+	return &traces[0].ConstructorInvocation.CallerAddress, nil
 }
 
 func (c *CairoVM) HandleDeclareTx(tx *core.DeclareTransaction) (*felt.Felt, error) {
