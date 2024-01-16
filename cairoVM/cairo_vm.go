@@ -38,8 +38,13 @@ func (c *CairoVM) HandleCall(call *rpc.FunctionCall, classHash *felt.Felt) ([]*f
 	return c.vm.Call(&call.ContractAddress, classHash, &call.EntryPointSelector, call.Calldata, 0, uint64(time.Now().Unix()), c.state, utils.Integration)
 }
 
-func (c *CairoVM) HandleDeployAccountTx(tx *core.DeployAccountTransaction) {
-
+func (c *CairoVM) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.Felt, error) {
+	txs := []core.Transaction{tx}
+	_, traces, err := c.vm.Execute(txs, nil, 0, uint64(time.Now().Unix()), &felt.Zero, c.state, utils.Integration, nil, false, false, true, &felt.Zero, &felt.Zero, false)
+	if err != nil {
+		return nil, err
+	}
+	return &traces[0].ExecuteInvocation.CallerAddress, nil
 }
 
 func (c *CairoVM) HandleDeclareTx(tx *core.DeclareTransaction) (*felt.Felt, error) {
