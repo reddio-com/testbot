@@ -58,9 +58,8 @@ func (c *Cairo) DeployAccount(classHash, contractAddr *felt.Felt) (*felt.Felt, e
 			ConstructorCallData: []*felt.Felt{c.acc.pubkey},
 			Version:             c.TxVersion,
 		},
-		MaxFee:         c.MaxFee,
-		Nonce:          &felt.Zero,
-		ResourceBounds: nil,
+		MaxFee: c.MaxFee,
+		Nonce:  &felt.Zero,
 	}
 	if tx.ContractAddress == nil {
 		tx.ContractAddress = core.ContractAddress(&felt.Zero, tx.ClassHash, tx.ContractAddressSalt, tx.ConstructorCallData)
