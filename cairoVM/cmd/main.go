@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/reddio-com/testbot/cairoVM"
+	"testbot/cairoVM"
 )
 
 func main() {
