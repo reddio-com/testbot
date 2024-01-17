@@ -1,13 +1,14 @@
 package cairoVM
 
 import (
+	"time"
+
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/juno/db/pebble"
 	"github.com/NethermindEth/juno/rpc"
 	"github.com/NethermindEth/juno/utils"
 	"github.com/NethermindEth/juno/vm"
-	"time"
 )
 
 type CairoVM struct {
@@ -89,6 +90,6 @@ func (c *CairoVM) HandleL1HandlerTx(tx *core.L1HandlerTransaction) error {
 	}
 	tx.TransactionHash = txnHash
 	txs := []core.Transaction{tx}
-	_, _, err := c.vm.Execute(txs, nil, 0, uint64(time.Now().Unix()), &felt.Zero, c.state, c.network, []*felt.Felt{&felt.Zero}, false, false, true, &felt.Zero, &felt.Zero, false)
+	_, _, err = c.vm.Execute(txs, nil, 0, uint64(time.Now().Unix()), &felt.Zero, c.state, c.network, []*felt.Felt{&felt.Zero}, false, false, true, &felt.Zero, &felt.Zero, false)
 	return err
 }
