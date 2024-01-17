@@ -4,11 +4,12 @@ go 1.21
 
 replace github.com/NethermindEth/juno => ./cairoVM/juno
 
-require github.com/NethermindEth/juno v0.0.0-00010101000000-000000000000
+require github.com/NethermindEth/juno v0.3.1
 
 require (
 	github.com/DataDog/zstd v1.5.5 // indirect
 	github.com/Masterminds/semver/v3 v3.2.1 // indirect
+	github.com/NethermindEth/starknet.go v0.6.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.12.0 // indirect
 	github.com/bits-and-blooms/bloom/v3 v3.4.0 // indirect
