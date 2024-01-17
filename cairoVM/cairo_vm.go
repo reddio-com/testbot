@@ -41,6 +41,10 @@ func (c *CairoVM) HandleCall(call *rpc.FunctionCall, classHash *felt.Felt) ([]*f
 	return c.vm.Call(&call.ContractAddress, classHash, &call.EntryPointSelector, call.Calldata, 0, uint64(time.Now().Unix()), c.state, c.cfg.Network)
 }
 
+func (c *CairoVM) DeployAccount(classHash *felt.Felt) {
+	
+}
+
 func (c *CairoVM) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.Felt, error) {
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
