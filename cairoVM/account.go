@@ -9,21 +9,21 @@ import (
 
 type Account struct {
 	ks     account.Keystore
-	pubkey string
+	pubkey *felt.Felt
 }
 
 func NewAccount() *Account {
 	ks, pub, _ := account.GetRandomKeys()
 	return &Account{
 		ks:     ks,
-		pubkey: pub.String(),
+		pubkey: pub,
 	}
 }
 
 func (ac *Account) Sign(ctx context.Context, msg *felt.Felt) ([]*felt.Felt, error) {
 	msgBig := utils.FeltToBigInt(msg)
 
-	s1, s2, err := ac.ks.Sign(ctx, ac.pubkey, msgBig)
+	s1, s2, err := ac.ks.Sign(ctx, ac.pubkey.String(), msgBig)
 	if err != nil {
 		return nil, err
 	}
