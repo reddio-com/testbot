@@ -8,9 +8,10 @@ import (
 
 type Config struct {
 	Network             utils.Network `toml:"network"`
-	TxVersion           string        `toml:"tx_version"`
+	TxVersion           uint64        `toml:"tx_version"`
 	AccountAddr         string        `toml:"account_addr"`
 	AccountCairoVersion int           `toml:"account_cairo_version"`
+	MaxFee              uint64        `toml:"max_fee"`
 }
 
 func LoadTomlConf(fpath string) *Config {
@@ -25,8 +26,9 @@ func LoadTomlConf(fpath string) *Config {
 func DefaultCfg() *Config {
 	return &Config{
 		Network:             1,
-		TxVersion:           "0x1",
+		TxVersion:           1,
 		AccountAddr:         "",
 		AccountCairoVersion: 0,
+		MaxFee:              10000000,
 	}
 }
