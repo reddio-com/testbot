@@ -17,6 +17,9 @@ type Cairo struct {
 	state core.StateReader
 	acc   *Account
 	cfg   *Config
+
+	TxVersion *core.TransactionVersion
+	MaxFee    *felt.Felt
 }
 
 func NewCairoVM(cfg *Config) (*Cairo, error) {
@@ -33,15 +36,35 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 		return nil, err
 	}
 	return &Cairo{
-		vm:    vm.New(log),
-		state: core.NewState(txn),
-		acc:   NewAccount(),
-		cfg:   cfg,
+		vm:        vm.New(log),
+		state:     core.NewState(txn),
+		acc:       NewAccount(),
+		cfg:       cfg,
+		TxVersion: new(core.TransactionVersion).SetUint64(cfg.TxVersion),
+		MaxFee:    new(felt.Felt).SetUint64(cfg.MaxFee),
 	}, nil
 }
 
 func (c *Cairo) HandleCall(call *rpc.FunctionCall, classHash *felt.Felt) ([]*felt.Felt, error) {
 	return c.vm.Call(&call.ContractAddress, classHash, &call.EntryPointSelector, call.Calldata, 0, uint64(time.Now().Unix()), c.state, c.cfg.Network)
+}
+
+func (c *Cairo) DeployAccount(classHash, contractAddr *felt.Felt) (*felt.Felt, error) {
+	tx := &core.DeployAccountTransaction{
+		DeployTransaction: core.DeployTransaction{
+			ContractAddressSalt: c.acc.pubkey,
+			ContractAddress:     contractAddr,
+			ClassHash:           classHash,
+			ConstructorCallData: []*felt.Felt{c.acc.pubkey},
+			Version:             c.TxVersion,
+		},
+		MaxFee: c.MaxFee,
+		Nonce:  &felt.Zero,
+	}
+	if tx.ContractAddress == nil {
+		tx.ContractAddress = core.ContractAddress(&felt.Zero, tx.ClassHash, tx.ContractAddressSalt, tx.ConstructorCallData)
+	}
+	return c.HandleDeployAccountTx(tx)
 }
 
 func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.Felt, error) {
