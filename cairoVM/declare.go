@@ -53,6 +53,7 @@ func NewDeclare(sierra_file_name string) *core.DeclareTransaction {
 		Version:           new(core.TransactionVersion).SetUint64(2),
 		CompiledClassHash: compClassHash,
 		ClassHash:         classHash,
+		SenderAddress:     &felt.Zero,
 	}
 
 	return &tx
