@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testbot/cairoVM"
 	// "github.com/NethermindEth/juno/core"
 )
@@ -11,8 +12,8 @@ func main() {
 		panic(err)
 	}
 
-	declare := cairoVM.NewDeclare("data/cool_compiled_class.casm", "data/cool_sierra_contract_class.json")
-	print(declare.Sierra)
+	declare_hash := cairoVM.NewDeclare("data/cool_sierra_contract_class.json")
+	fmt.Println(declare_hash)
 
 	// tx := core.DeclareTransaction{}
 	// _, err = vm.HandleDeclareTx(&tx)

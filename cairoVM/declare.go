@@ -1,29 +1,34 @@
 package cairoVM
 
 import (
-	"fmt"
+	"encoding/json"
 	"os"
+
+	"github.com/NethermindEth/juno/core/felt"
+	"github.com/NethermindEth/starknet.go/contracts"
+	"github.com/NethermindEth/starknet.go/hash"
 )
 
 type Declare struct {
 	// Fields
-	Compile string
-	Sierra  string
+	Compile   string
+	Sierra    string
+	CasmClass *contracts.CasmClass
 }
 
-func NewDeclare(compile_casm_file_name string, sierra_file_name string) *Declare {
-	casm_data, err := os.ReadFile(compile_casm_file_name) // just pass the file name
+func NewDeclare(sierra_file_name string) *felt.Felt {
+	// ref to https://github.com/NethermindEth/starknet.go/blob/915109ab5bc1c9c5bae7a71553a96e6665c0dcb2/account/account_test.go#L1116
+	content, err := os.ReadFile(sierra_file_name)
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
 	}
 
-	sierra_data, err := os.ReadFile(sierra_file_name) // just pass the file name
+	var casmClass contracts.CasmClass
+	err = json.Unmarshal(content, &casmClass)
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
 	}
 
-	return &Declare{
-		Compile: string(casm_data),
-		Sierra:  string(sierra_data),
-	}
+	compClassHash := hash.CompiledClassHash(casmClass)
+	return compClassHash
 }
