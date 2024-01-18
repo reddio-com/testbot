@@ -11,7 +11,7 @@ func main() {
 		panic(err)
 	}
 
-	declare_tx := cairoVM.NewDeclare("data/hello_starknet_sierra.json")
+	declare_tx := cairoVM.NewDeclare("data/cool_sierra_contract_class.json")
 	// fmt.Println(declare_tx)
 
 	_, err = vm.HandleDeclareTx(declare_tx)
