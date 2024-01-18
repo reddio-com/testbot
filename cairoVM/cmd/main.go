@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	vm, err := cairoVM.NewCairoVM(1)
+	vm, err := cairoVM.NewCairoVM(cairoVM.DefaultCfg())
 	if err != nil {
 		panic(err)
 	}
