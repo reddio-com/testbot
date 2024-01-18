@@ -22,16 +22,16 @@ jobs:
         go-version: '1.21'
 
     - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly-2023-11-13
+      with:
+        toolchain: nightly-2023-11-13
 
     - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces:
-              "cairoVM/juno/vm/rust -> target"
-              "cairoVM/juno/core/rust -> target"
-              "cairoVM/juno/starknet/rust -> target"
+      uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: 
+            "cairoVM/juno/vm/rust -> target"
+            "cairoVM/juno/core/rust -> target"
+            "cairoVM/juno/starknet/rust -> target"
 
     - name: Download juno
       run: |
