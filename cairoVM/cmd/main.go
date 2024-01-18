@@ -1,23 +1,21 @@
 package main
 
 import (
-	"fmt"
 	"testbot/cairoVM"
 	// "github.com/NethermindEth/juno/core"
 )
 
 func main() {
-	_, err := cairoVM.NewCairoVM(cairoVM.DefaultCfg())
+	vm, err := cairoVM.NewCairoVM(cairoVM.DefaultCfg())
 	if err != nil {
 		panic(err)
 	}
 
-	declare_hash := cairoVM.NewDeclare("data/cool_sierra_contract_class.json")
-	fmt.Println(declare_hash)
+	declare_tx := cairoVM.NewDeclare("data/cool_sierra_contract_class.json")
+	// fmt.Println(declare_tx)
 
-	// tx := core.DeclareTransaction{}
-	// _, err = vm.HandleDeclareTx(&tx)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	_, err = vm.HandleDeclareTx(declare_tx)
+	if err != nil {
+		panic(err)
+	}
 }

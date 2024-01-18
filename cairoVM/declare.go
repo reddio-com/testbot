@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
+	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/contracts"
 	"github.com/NethermindEth/starknet.go/hash"
@@ -16,8 +17,9 @@ type Declare struct {
 	CasmClass *contracts.CasmClass
 }
 
-func NewDeclare(sierra_file_name string) *felt.Felt {
+func NewDeclare(sierra_file_name string) *core.DeclareTransaction {
 	// ref to https://github.com/NethermindEth/starknet.go/blob/915109ab5bc1c9c5bae7a71553a96e6665c0dcb2/account/account_test.go#L1116
+
 	content, err := os.ReadFile(sierra_file_name)
 	if err != nil {
 		panic(err)
@@ -30,5 +32,19 @@ func NewDeclare(sierra_file_name string) *felt.Felt {
 	}
 
 	compClassHash := hash.CompiledClassHash(casmClass)
-	return compClassHash
+
+	var nonce felt.Felt
+	nonce.SetUint64(0)
+
+	var maxFee felt.Felt
+	maxFee.SetUint64(1000000000000000000)
+
+	tx := core.DeclareTransaction{
+		Nonce:             &nonce,
+		MaxFee:            &maxFee,
+		Version:           new(core.TransactionVersion).SetUint64(2),
+		CompiledClassHash: compClassHash,
+	}
+
+	return &tx
 }
