@@ -8,6 +8,7 @@ import (
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/contracts"
 	"github.com/NethermindEth/starknet.go/hash"
+	"github.com/NethermindEth/starknet.go/rpc"
 )
 
 type Declare struct {
@@ -24,6 +25,13 @@ func NewDeclare(sierra_file_name string) *core.DeclareTransaction {
 	if err != nil {
 		panic(err)
 	}
+
+	var class rpc.ContractClass
+	err = json.Unmarshal(content, &class)
+	if err != nil {
+		panic(err)
+	}
+	classHash, err := hash.ClassHash(class)
 
 	var casmClass contracts.CasmClass
 	err = json.Unmarshal(content, &casmClass)
@@ -44,6 +52,7 @@ func NewDeclare(sierra_file_name string) *core.DeclareTransaction {
 		MaxFee:            &maxFee,
 		Version:           new(core.TransactionVersion).SetUint64(2),
 		CompiledClassHash: compClassHash,
+		ClassHash:         classHash,
 	}
 
 	return &tx
