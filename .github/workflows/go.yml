@@ -28,7 +28,7 @@ jobs:
     - name: Cache cargo
       uses: Swatinem/rust-cache@v2
       with:
-        workspaces: 
+        workspaces:
             "cairoVM/juno/vm/rust -> target"
             "cairoVM/juno/core/rust -> target"
             "cairoVM/juno/starknet/rust -> target"
