@@ -18,7 +18,7 @@ type Declare struct {
 	CasmClass *contracts.CasmClass
 }
 
-func NewDeclare(sierra_file_name string) (*core.DeclareTransaction, rpc.ContractClass) {
+func NewDeclare(sierra_file_name string) (*core.DeclareTransaction, core.Class) {
 	// ref to https://github.com/NethermindEth/starknet.go/blob/915109ab5bc1c9c5bae7a71553a96e6665c0dcb2/account/account_test.go#L1116
 
 	content, err := os.ReadFile(sierra_file_name)
@@ -56,5 +56,7 @@ func NewDeclare(sierra_file_name string) (*core.DeclareTransaction, rpc.Contract
 		SenderAddress:     &felt.Zero,
 	}
 
-	return &tx, class
+	coreClass, err := adaptDeclaredClass(content)
+
+	return &tx, coreClass
 }

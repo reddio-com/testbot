@@ -10,7 +10,6 @@ import (
 	"github.com/NethermindEth/juno/rpc"
 	"github.com/NethermindEth/juno/utils"
 	"github.com/NethermindEth/juno/vm"
-	gorpc "github.com/NethermindEth/starknet.go/rpc"
 )
 
 type Cairo struct {
@@ -88,7 +87,7 @@ func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.
 	return &traces[0].ConstructorInvocation.CallerAddress, nil
 }
 
-func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class gorpc.ContractClass) (*felt.Felt, error) {
+func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*felt.Felt, error) {
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
