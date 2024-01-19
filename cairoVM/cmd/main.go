@@ -11,10 +11,10 @@ func main() {
 		panic(err)
 	}
 
-	declare_tx, class := cairoVM.NewDeclare("data/cool_sierra_contract_class.json")
+	declareTx, class := cairoVM.NewDeclare("data/cool_sierra_contract_class.json")
 	// fmt.Println(declare_tx)
 
-	_, err = vm.HandleDeclareTx(declare_tx, class)
+	_, err = vm.HandleDeclareTx(declareTx, class)
 	if err != nil {
 		panic(err)
 	}

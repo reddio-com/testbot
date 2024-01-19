@@ -18,10 +18,10 @@ type Declare struct {
 	CasmClass *contracts.CasmClass
 }
 
-func NewDeclare(sierra_file_name string) (*core.DeclareTransaction, core.Class) {
+func NewDeclare(sierraFileName string) (*core.DeclareTransaction, core.Class) {
 	// ref to https://github.com/NethermindEth/starknet.go/blob/915109ab5bc1c9c5bae7a71553a96e6665c0dcb2/account/account_test.go#L1116
 
-	content, err := os.ReadFile(sierra_file_name)
+	content, err := os.ReadFile(sierraFileName)
 	if err != nil {
 		panic(err)
 	}
