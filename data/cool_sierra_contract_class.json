@@ -395,35 +395,5 @@
     "L1_HANDLER": [],
     "CONSTRUCTOR": []
   },
-  "abi": [
-    {
-      "type": "function",
-      "name": "set_value",
-      "inputs": [
-        {
-          "name": "_value",
-          "type": "core::integer::u128"
-        }
-      ],
-      "outputs": [],
-      "state_mutability": "external"
-    },
-    {
-      "type": "function",
-      "name": "get_value",
-      "inputs": [],
-      "outputs": [
-        {
-          "type": "core::integer::u128"
-        }
-      ],
-      "state_mutability": "view"
-    },
-    {
-      "type": "event",
-      "name": "cool::cool::cool::Event",
-      "kind": "enum",
-      "variants": []
-    }
-  ]
+  "abi": "[{\"type\": \"function\",\"name\": \"set_value\",\"inputs\": [{\"name\": \"_value\",\"type\": \"core::integer::u128\"}],\"outputs\": [],\"state_mutability\": \"external\"},{\"type\": \"function\",\"name\": \"get_value\",\"inputs\": [],\"outputs\": [{\"type\": \"core::integer::u128\"}],\"state_mutability\": \"view\"},{\"type\": \"event\",\"name\": \"cool::cool::cool::Event\",\"kind\": \"enum\",\"variants\": []}]"
 }

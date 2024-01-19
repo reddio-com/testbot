@@ -25,10 +25,10 @@ jobs:
       with:
         toolchain: nightly-2023-11-13
 
-    - name: Cache cargo
-      uses: Swatinem/rust-cache@v2
-      with:
-        workspaces: "cairoVM/juno/vm/rust -> target"
+#    - name: Cache cargo
+#      uses: Swatinem/rust-cache@v2
+#      with:
+#        workspaces: "cairoVM/juno/vm/rust -> target"
 
     - name: Download juno
       run: |
