@@ -35,9 +35,14 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 	if err != nil {
 		return nil, err
 	}
+	state := core.NewState(txn)
+	err = SetGenesis(state, "data/genesis")
+	if err != nil {
+		return nil, err
+	}
 	return &Cairo{
 		vm:        vm.New(log),
-		state:     core.NewState(txn),
+		state:     state,
 		acc:       NewAccount(),
 		cfg:       cfg,
 		TxVersion: new(core.TransactionVersion).SetUint64(cfg.TxVersion),
