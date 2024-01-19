@@ -10,6 +10,7 @@ import (
 	"github.com/NethermindEth/juno/rpc"
 	"github.com/NethermindEth/juno/utils"
 	"github.com/NethermindEth/juno/vm"
+	gorpc "github.com/NethermindEth/starknet.go/rpc"
 )
 
 type Cairo struct {
@@ -87,7 +88,7 @@ func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.
 	return &traces[0].ConstructorInvocation.CallerAddress, nil
 }
 
-func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction) (*felt.Felt, error) {
+func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class gorpc.ContractClass) (*felt.Felt, error) {
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
@@ -100,7 +101,8 @@ func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction) (*felt.Felt, error)
 	tx.TransactionSignature = sig
 
 	txs := []core.Transaction{tx}
-	_, traces, err := c.vm.Execute(txs, nil, 0, uint64(time.Now().Unix()), &felt.Zero, c.state, c.cfg.Network, make([]*felt.Felt, 0), false, false, true, &felt.Zero, &felt.Zero, false)
+	classes := []core.Class{class}
+	_, traces, err := c.vm.Execute(txs, classes, 0, uint64(time.Now().Unix()), &felt.Zero, c.state, c.cfg.Network, make([]*felt.Felt, 0), false, false, true, &felt.Zero, &felt.Zero, false)
 	if err != nil {
 		return nil, err
 	}
