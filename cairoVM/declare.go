@@ -11,13 +11,6 @@ import (
 	"github.com/NethermindEth/starknet.go/rpc"
 )
 
-type Declare struct {
-	// Fields
-	Compile   string
-	Sierra    string
-	CasmClass *contracts.CasmClass
-}
-
 func NewDeclare(sierraFileName string) (*core.DeclareTransaction, core.Class) {
 	// ref to https://github.com/NethermindEth/starknet.go/blob/915109ab5bc1c9c5bae7a71553a96e6665c0dcb2/account/account_test.go#L1116
 
