@@ -45,7 +45,7 @@ func NewDeclare(sierra_file_name string) (*core.DeclareTransaction, core.Class) 
 	nonce.SetUint64(0)
 
 	var maxFee felt.Felt
-	maxFee.SetUint64(1000000000000000000)
+	maxFee.SetUint64(0)
 
 	tx := core.DeclareTransaction{
 		Nonce:             &nonce,
