@@ -11,7 +11,13 @@ func main() {
 		panic(err)
 	}
 
-	declareTx, class := cairoVM.NewDeclare("data/cool_sierra_contract_class.json")
+	declareTx, class, err := cairoVM.NewDeclare(
+		"data/cool_sierra_contract_class.json",
+		"data/cool_compiled_class.casm",
+	)
+	if err != nil {
+		panic(err)
+	}
 	// fmt.Println(declare_tx)
 
 	_, err = vm.HandleDeclareTx(declareTx, class)

@@ -29,28 +29,27 @@ func SetGenesis(state *core.State, dir string) error {
 	return state.Update(0, nil, classes)
 }
 
-func NewDeclare(sierraFileName string) (*core.DeclareTransaction, core.Class) {
+func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, core.Class, error) {
 	// ref to https://github.com/NethermindEth/starknet.go/blob/915109ab5bc1c9c5bae7a71553a96e6665c0dcb2/account/account_test.go#L1116
 
 	content, err := os.ReadFile(sierraFileName)
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 
 	var class rpc.ContractClass
 	err = json.Unmarshal(content, &class)
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 	classHash, err := hash.ClassHash(class)
 
-	var casmClass contracts.CasmClass
-	err = json.Unmarshal(content, &casmClass)
+	casmClass, err := contracts.UnmarshalCasmClass(casmFileName)
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 
-	compClassHash := hash.CompiledClassHash(casmClass)
+	compClassHash := hash.CompiledClassHash(*casmClass)
 
 	var nonce felt.Felt
 	nonce.SetUint64(0)
@@ -69,7 +68,7 @@ func NewDeclare(sierraFileName string) (*core.DeclareTransaction, core.Class) {
 
 	coreClass, err := adaptDeclaredClass(content)
 
-	return &tx, coreClass
+	return &tx, coreClass, err
 }
 
 func adaptClassAndHash(fileName string) (core.Class, *felt.Felt, error) {
