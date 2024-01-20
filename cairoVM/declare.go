@@ -26,7 +26,12 @@ func SetGenesis(state *core.State, dir string) error {
 		}
 		classes[*classHash] = class
 	}
-	return state.Update(0, nil, classes)
+	return state.Update(0, &core.StateUpdate{
+		BlockHash: &felt.Zero,
+		NewRoot:   &felt.Zero,
+		OldRoot:   &felt.Zero,
+		StateDiff: core.EmptyStateDiff(),
+	}, classes)
 }
 
 func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, core.Class, error) {
