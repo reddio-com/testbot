@@ -36,7 +36,7 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 		return nil, err
 	}
 	state := core.NewState(txn)
-	err = SetGenesis(state, "data/genesis")
+	err = SetGenesis(state, "data/genesis/ArgentAccountCairoOne.json", "data/genesis/ArgentAccountCairoOne.casm")
 	if err != nil {
 		return nil, err
 	}

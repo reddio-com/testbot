@@ -2,21 +2,16 @@ package cairoVM
 
 import (
 	"encoding/json"
-	"os"
-	"path/filepath"
-
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/contracts"
 	"github.com/NethermindEth/starknet.go/hash"
 	"github.com/NethermindEth/starknet.go/rpc"
+	"os"
 )
 
-func SetGenesis(state *core.State, dir string) error {
-	files, err := os.ReadDir(dir)
-	if err != nil {
-		return err
-	}
+func SetGenesis(state *core.State, sierraFileName, casmFileName string) error {
+
 	declaredClasses := make(map[felt.Felt]core.Class)
 	deployedContracts := make(map[felt.Felt]*felt.Felt)
 	declaredV1Classes := make(map[felt.Felt]*felt.Felt)
@@ -26,24 +21,17 @@ func SetGenesis(state *core.State, dir string) error {
 		compiledClassHash *felt.Felt
 	)
 
-	for _, file := range files {
-		filePath := filepath.Join(dir, file.Name())
-		switch filepath.Ext(filePath) {
-		case "json":
-			class, classHash, err = adaptClassAndHash(filePath)
-			if err != nil {
-				return err
-			}
-			declaredClasses[*classHash] = class
-			deployedContracts[felt.Zero] = classHash
-		case "casm":
-			casmClass, err := contracts.UnmarshalCasmClass(filePath)
-			if err != nil {
-				return err
-			}
-			compiledClassHash = hash.CompiledClassHash(*casmClass)
-		}
+	class, classHash, err := adaptClassAndHash(sierraFileName)
+	if err != nil {
+		return err
 	}
+	declaredClasses[*classHash] = class
+	deployedContracts[felt.Zero] = classHash
+	casmClass, err := contracts.UnmarshalCasmClass(casmFileName)
+	if err != nil {
+		return err
+	}
+	compiledClassHash = hash.CompiledClassHash(*casmClass)
 
 	declaredV1Classes[*classHash] = compiledClassHash
 
