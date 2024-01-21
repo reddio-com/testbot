@@ -52,6 +52,7 @@ func SetGenesis(state *core.State, dir string) error {
 		NewRoot:   &felt.Zero,
 		OldRoot:   &felt.Zero,
 		StateDiff: &core.StateDiff{
+			Nonces:            map[felt.Felt]*felt.Felt{felt.Zero: &felt.Zero},
 			DeployedContracts: deployedContracts,
 			DeclaredV1Classes: declaredV1Classes,
 		},
