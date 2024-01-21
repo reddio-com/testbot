@@ -29,6 +29,6 @@ func DefaultCfg() *Config {
 		TxVersion:           1,
 		AccountAddr:         "",
 		AccountCairoVersion: 0,
-		MaxFee:              10000000,
+		MaxFee:              0,
 	}
 }

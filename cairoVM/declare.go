@@ -17,21 +17,45 @@ func SetGenesis(state *core.State, dir string) error {
 	if err != nil {
 		return err
 	}
-	classes := make(map[felt.Felt]core.Class)
+	declaredClasses := make(map[felt.Felt]core.Class)
+	deployedContracts := make(map[felt.Felt]*felt.Felt)
+	declaredV1Classes := make(map[felt.Felt]*felt.Felt)
+	var (
+		class             core.Class
+		classHash         *felt.Felt
+		compiledClassHash *felt.Felt
+	)
+
 	for _, file := range files {
 		filePath := filepath.Join(dir, file.Name())
-		class, classHash, err := adaptClassAndHash(filePath)
-		if err != nil {
-			return err
+		switch filepath.Ext(filePath) {
+		case "json":
+			class, classHash, err = adaptClassAndHash(filePath)
+			if err != nil {
+				return err
+			}
+			declaredClasses[*classHash] = class
+			deployedContracts[felt.Zero] = classHash
+		case "casm":
+			casmClass, err := contracts.UnmarshalCasmClass(filePath)
+			if err != nil {
+				return err
+			}
+			compiledClassHash = hash.CompiledClassHash(*casmClass)
 		}
-		classes[*classHash] = class
 	}
+
+	declaredV1Classes[*classHash] = compiledClassHash
+
 	return state.Update(0, &core.StateUpdate{
 		BlockHash: &felt.Zero,
 		NewRoot:   &felt.Zero,
 		OldRoot:   &felt.Zero,
-		StateDiff: core.EmptyStateDiff(),
-	}, classes)
+		StateDiff: &core.StateDiff{
+			DeployedContracts: deployedContracts,
+			DeclaredV1Classes: declaredV1Classes,
+		},
+	}, declaredClasses)
 }
 
 func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, core.Class, error) {
@@ -76,8 +100,8 @@ func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, 
 	return &tx, coreClass, err
 }
 
-func adaptClassAndHash(fileName string) (core.Class, *felt.Felt, error) {
-	content, err := os.ReadFile(fileName)
+func adaptClassAndHash(sierraFileName string) (core.Class, *felt.Felt, error) {
+	content, err := os.ReadFile(sierraFileName)
 	if err != nil {
 		panic(err)
 	}
