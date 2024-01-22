@@ -37,7 +37,7 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 		return nil, err
 	}
 	state := core.NewState(txn)
-	err = SetGenesis(state, "data/genesis/ArgentAccountCairoOne.json", "data/genesis/ArgentAccountCairoOne.casm.json")
+	err = SetGenesis(state, "data/genesis/NoValidateAccount.sierra.json", "data/genesis/NoValidateAccount.casm.json")
 	if err != nil {
 		return nil, err
 	}

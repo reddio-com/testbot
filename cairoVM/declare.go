@@ -40,7 +40,7 @@ func SetGenesis(state *core.State, sierraFileName, casmFileName string) error {
 
 	declaredV1Classes[*classHash] = compiledClassHash
 
-	newRoot, err := new(felt.Felt).SetString("0x4427787a2736725e3f47b89f8e8a6042c9c68eda0224f0ed0b5fb414a7d79ec")
+	newRoot, err := new(felt.Felt).SetString("0x42e2546d91d85d60f1ee5ac114884831953c61f0b141a101ceae8efba9eda3a")
 	if err != nil {
 		return err
 	}
