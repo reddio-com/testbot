@@ -2,6 +2,7 @@ package cairoVM
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/NethermindEth/juno/core"
@@ -35,9 +36,14 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 	if err != nil {
 		return nil, err
 	}
+	state := core.NewState(txn)
+	err = SetGenesis(state, "data/genesis/NoValidateAccount.sierra.json", "data/genesis/NoValidateAccount.casm.json")
+	if err != nil {
+		return nil, err
+	}
 	return &Cairo{
 		vm:        vm.New(log),
-		state:     core.NewState(txn),
+		state:     state,
 		acc:       NewAccount(),
 		cfg:       cfg,
 		TxVersion: new(core.TransactionVersion).SetUint64(cfg.TxVersion),
@@ -87,7 +93,8 @@ func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.
 	return &traces[0].ConstructorInvocation.CallerAddress, nil
 }
 
-func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*felt.Felt, error) {
+func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*vm.TransactionTrace, error) {
+	fmt.Println(" Declare TX !!!")
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
@@ -105,7 +112,8 @@ func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (
 	if err != nil {
 		return nil, err
 	}
-	return traces[0].ExecuteInvocation.FunctionInvocation.ClassHash, nil
+
+	return &traces[0], nil
 }
 
 func (c *Cairo) HandleInvokeTx(tx *core.InvokeTransaction) (*vm.TransactionTrace, error) {
