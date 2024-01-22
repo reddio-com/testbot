@@ -93,7 +93,7 @@ func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.
 	return &traces[0].ConstructorInvocation.CallerAddress, nil
 }
 
-func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*felt.Felt, error) {
+func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*vm.TransactionTrace, error) {
 	fmt.Println(" Declare TX !!!")
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
@@ -112,7 +112,8 @@ func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (
 	if err != nil {
 		return nil, err
 	}
-	return traces[0].ExecuteInvocation.FunctionInvocation.ClassHash, nil
+
+	return &traces[0], nil
 }
 
 func (c *Cairo) HandleInvokeTx(tx *core.InvokeTransaction) (*vm.TransactionTrace, error) {

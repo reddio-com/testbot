@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/davecgh/go-spew/spew"
 	"testbot/cairoVM"
 	// "github.com/NethermindEth/juno/core"
 )
@@ -20,8 +21,9 @@ func main() {
 	}
 	// fmt.Println(declare_tx)
 
-	_, err = vm.HandleDeclareTx(declareTx, class)
+	trace, err := vm.HandleDeclareTx(declareTx, class)
 	if err != nil {
 		panic(err)
 	}
+	spew.Dump(trace)
 }
