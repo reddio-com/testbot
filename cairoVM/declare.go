@@ -35,9 +35,14 @@ func SetGenesis(state *core.State, sierraFileName, casmFileName string) error {
 
 	declaredV1Classes[*classHash] = compiledClassHash
 
+	newRoot, err := new(felt.Felt).SetString("0x4427787a2736725e3f47b89f8e8a6042c9c68eda0224f0ed0b5fb414a7d79ec")
+	if err != nil {
+		return err
+	}
+
 	return state.Update(0, &core.StateUpdate{
 		BlockHash: &felt.Zero,
-		NewRoot:   &felt.Zero,
+		NewRoot:   newRoot,
 		OldRoot:   &felt.Zero,
 		StateDiff: &core.StateDiff{
 			Nonces:            map[felt.Felt]*felt.Felt{felt.Zero: &felt.Zero},
