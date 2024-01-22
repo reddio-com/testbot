@@ -3,6 +3,7 @@ package cairoVM
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/NethermindEth/juno/blockchain"
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/contracts"
@@ -12,6 +13,8 @@ import (
 )
 
 func SetGenesis(state *core.State, sierraFileName, casmFileName string) error {
+
+	blockchain.RegisterCoreTypesToEncoder()
 
 	declaredClasses := make(map[felt.Felt]core.Class)
 	deployedContracts := make(map[felt.Felt]*felt.Felt)
