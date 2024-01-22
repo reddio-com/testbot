@@ -2,6 +2,7 @@ package cairoVM
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/NethermindEth/juno/core"
@@ -93,6 +94,7 @@ func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.
 }
 
 func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*felt.Felt, error) {
+	fmt.Println(" Declare TX !!!")
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err

@@ -2,6 +2,7 @@ package cairoVM
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/contracts"
@@ -25,6 +26,7 @@ func SetGenesis(state *core.State, sierraFileName, casmFileName string) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("genesis classHash = ", classHash.String())
 	declaredClasses[*classHash] = class
 	deployedContracts[felt.Zero] = classHash
 	casmClass, err := contracts.UnmarshalCasmClass(casmFileName)
@@ -66,6 +68,10 @@ func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, 
 		return nil, nil, err
 	}
 	classHash, err := hash.ClassHash(class)
+	if err != nil {
+		return nil, nil, err
+	}
+	fmt.Println("ClassHash = ", classHash.String())
 
 	casmClass, err := contracts.UnmarshalCasmClass(casmFileName)
 	if err != nil {
@@ -73,6 +79,7 @@ func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, 
 	}
 
 	compClassHash := hash.CompiledClassHash(*casmClass)
+	fmt.Println("CasmClass = ", compClassHash.String())
 
 	var nonce felt.Felt
 	nonce.SetUint64(0)
