@@ -18,6 +18,7 @@ func SetGenesis(state *core.State, cairoFiles map[string]string) error {
 	declaredClasses := make(map[felt.Felt]core.Class)
 	deployedContracts := make(map[felt.Felt]*felt.Felt)
 	declaredV1Classes := make(map[felt.Felt]*felt.Felt)
+	nonces := make(map[felt.Felt]*felt.Felt)
 	var (
 		class             core.Class
 		classHash         *felt.Felt
@@ -43,10 +44,12 @@ func SetGenesis(state *core.State, cairoFiles map[string]string) error {
 		compiledClassHash = hash.CompiledClassHash(*casmClass)
 
 		declaredV1Classes[*classHash] = compiledClassHash
+
+		nonces[*addrFelt] = &felt.Zero
 		addr++
 	}
 
-	newRoot, err := new(felt.Felt).SetString("0x42e2546d91d85d60f1ee5ac114884831953c61f0b141a101ceae8efba9eda3a")
+	newRoot, err := new(felt.Felt).SetString("0x56f007b0f69daa75af325ecfa0d717bfd4d72bfa102151912fe4a15b9dfd30f")
 	if err != nil {
 		return err
 	}
@@ -56,7 +59,7 @@ func SetGenesis(state *core.State, cairoFiles map[string]string) error {
 		NewRoot:   newRoot,
 		OldRoot:   &felt.Zero,
 		StateDiff: &core.StateDiff{
-			Nonces:            map[felt.Felt]*felt.Felt{felt.Zero: &felt.Zero},
+			Nonces:            nonces,
 			DeployedContracts: deployedContracts,
 			DeclaredV1Classes: declaredV1Classes,
 		},
