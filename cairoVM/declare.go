@@ -3,7 +3,6 @@ package cairoVM
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/NethermindEth/juno/blockchain"
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/contracts"
@@ -11,51 +10,6 @@ import (
 	"github.com/NethermindEth/starknet.go/rpc"
 	"os"
 )
-
-func SetGenesis(state *core.State, sierraFileName, casmFileName string) error {
-
-	blockchain.RegisterCoreTypesToEncoder()
-
-	declaredClasses := make(map[felt.Felt]core.Class)
-	deployedContracts := make(map[felt.Felt]*felt.Felt)
-	declaredV1Classes := make(map[felt.Felt]*felt.Felt)
-	var (
-		class             core.Class
-		classHash         *felt.Felt
-		compiledClassHash *felt.Felt
-	)
-
-	class, classHash, err := adaptClassAndHash(sierraFileName)
-	if err != nil {
-		return err
-	}
-	fmt.Println("genesis classHash = ", classHash.String())
-	declaredClasses[*classHash] = class
-	deployedContracts[felt.Zero] = classHash
-	casmClass, err := contracts.UnmarshalCasmClass(casmFileName)
-	if err != nil {
-		return err
-	}
-	compiledClassHash = hash.CompiledClassHash(*casmClass)
-
-	declaredV1Classes[*classHash] = compiledClassHash
-
-	newRoot, err := new(felt.Felt).SetString("0x42e2546d91d85d60f1ee5ac114884831953c61f0b141a101ceae8efba9eda3a")
-	if err != nil {
-		return err
-	}
-
-	return state.Update(0, &core.StateUpdate{
-		BlockHash: &felt.Zero,
-		NewRoot:   newRoot,
-		OldRoot:   &felt.Zero,
-		StateDiff: &core.StateDiff{
-			Nonces:            map[felt.Felt]*felt.Felt{felt.Zero: &felt.Zero},
-			DeployedContracts: deployedContracts,
-			DeclaredV1Classes: declaredV1Classes,
-		},
-	}, declaredClasses)
-}
 
 func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, core.Class, error) {
 	// ref to https://github.com/NethermindEth/starknet.go/blob/915109ab5bc1c9c5bae7a71553a96e6665c0dcb2/account/account_test.go#L1116

@@ -37,7 +37,10 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 		return nil, err
 	}
 	state := core.NewState(txn)
-	err = SetGenesis(state, "data/genesis/NoValidateAccount.sierra.json", "data/genesis/NoValidateAccount.casm.json")
+	cairoFiles := make(map[string]string)
+	cairoFiles["data/genesis/NoValidateAccount.sierra.json"] = "data/genesis/NoValidateAccount.casm.json"
+	cairoFiles["data/genesis/erc20.sierra.json"] = "data/genesis/erc20.casm.json"
+	err = SetGenesis(state, cairoFiles)
 	if err != nil {
 		return nil, err
 	}
