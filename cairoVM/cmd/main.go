@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/NethermindEth/juno/core/felt"
 	"github.com/davecgh/go-spew/spew"
 	"testbot/cairoVM"
 	// "github.com/NethermindEth/juno/core"
@@ -21,9 +22,18 @@ func main() {
 	}
 	// fmt.Println(declare_tx)
 
+	// declare TX
 	trace, err := vm.HandleDeclareTx(declareTx, class)
 	if err != nil {
 		panic(err)
 	}
 	spew.Dump(trace)
+
+	// deployAccount TX
+	trace, err = vm.DeployAccount(declareTx.ClassHash, &felt.Zero)
+	if err != nil {
+		panic(err)
+	}
+	spew.Dump(trace)
+
 }
