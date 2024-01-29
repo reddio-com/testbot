@@ -7,7 +7,6 @@ import (
 
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
-	"github.com/NethermindEth/juno/db/pebble"
 	"github.com/NethermindEth/juno/rpc"
 	"github.com/NethermindEth/juno/utils"
 	"github.com/NethermindEth/juno/vm"
@@ -28,19 +27,20 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 	if err != nil {
 		return nil, err
 	}
-	db, err := pebble.NewMem()
-	if err != nil {
-		return nil, err
-	}
-	txn, err := db.NewTransaction(true)
-	if err != nil {
-		return nil, err
-	}
-	state := core.NewState(txn)
-	cairoFiles := make(map[string]string)
-	cairoFiles["data/genesis/NoValidateAccount.sierra.json"] = "data/genesis/NoValidateAccount.casm.json"
-	cairoFiles["data/genesis/erc20.sierra.json"] = "data/genesis/erc20.casm.json"
-	err = SetGenesis(state, cairoFiles)
+	//db, err := pebble.NewMem()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//txn, err := db.NewTransaction(true)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//state := core.NewState(txn)
+	//cairoFiles := make(map[string]string)
+	//cairoFiles["data/genesis/NoValidateAccount.sierra.json"] = "data/genesis/NoValidateAccount.casm.json"
+	//cairoFiles["data/genesis/erc20.sierra.json"] = "data/genesis/erc20.casm.json"
+
+	state, err := BuildGenesis([]string{"data/genesis/NoValidateAccount.sierra.json", "data/genesis/erc20.sierra.json"})
 	if err != nil {
 		return nil, err
 	}
