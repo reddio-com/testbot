@@ -13,6 +13,14 @@ func main() {
 		panic(err)
 	}
 
+	// deployAccount TX
+	trace, err := vm.DeployAccount(cairoVM.AccountClassHash, &felt.Zero)
+	if err != nil {
+		panic(err)
+	}
+	spew.Dump(trace)
+
+	// declare TX
 	declareTx, class, err := cairoVM.NewDeclare(
 		"data/cool_sierra_contract_class.json",
 		"data/cool_compiled_class.casm",
@@ -20,17 +28,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	// fmt.Println(declare_tx)
 
-	// declare TX
-	trace, err := vm.HandleDeclareTx(declareTx, class)
-	if err != nil {
-		panic(err)
-	}
-	spew.Dump(trace)
-
-	// deployAccount TX
-	trace, err = vm.DeployAccount(declareTx.ClassHash, &felt.Zero)
+	trace, err = vm.HandleDeclareTx(declareTx, class)
 	if err != nil {
 		panic(err)
 	}

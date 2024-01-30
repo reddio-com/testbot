@@ -60,7 +60,8 @@ func init() {
 //	return state.Update(0, core.EmptyStateDiff(), declaredClasses)
 //}
 
-// contractsData: map[address]classHash
+var AccountClassHash *felt.Felt
+
 func BuildGenesis(classesPaths []string) (*blockchain.PendingStateWriter, error) {
 	classes, err := loadClasses(classesPaths)
 	if err != nil {
@@ -103,7 +104,7 @@ func BuildGenesis(classesPaths []string) (*blockchain.PendingStateWriter, error)
 // return map[classHash]Class
 func loadClasses(classes []string) (map[felt.Felt]core.Class, error) {
 	classMap := make(map[felt.Felt]core.Class)
-	for _, classPath := range classes {
+	for i, classPath := range classes {
 		bytes, err := os.ReadFile(classPath)
 		if err != nil {
 			return nil, fmt.Errorf("read class file: %v", err)
@@ -128,6 +129,9 @@ func loadClasses(classes []string) (map[felt.Felt]core.Class, error) {
 		classhash, err := coreClass.Hash()
 		if err != nil {
 			return nil, fmt.Errorf("calculate class hash: %v", err)
+		}
+		if i == 0 {
+			AccountClassHash = classhash
 		}
 		classMap[*classhash] = coreClass
 	}

@@ -77,7 +77,7 @@ func (c *Cairo) DeployAccount(classHash, contractAddr *felt.Felt) (*vm.Transacti
 }
 
 func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*vm.TransactionTrace, error) {
-	fmt.Println("DeployAccount TX !!!")
+	fmt.Println("------------- DeployAccount TX -------------")
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*vm.Tr
 }
 
 func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*vm.TransactionTrace, error) {
-	fmt.Println(" Declare TX !!!")
+	fmt.Println("------------- Declare TX -------------")
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
