@@ -7,7 +7,6 @@ import (
 
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
-	"github.com/NethermindEth/juno/db/pebble"
 	"github.com/NethermindEth/juno/rpc"
 	"github.com/NethermindEth/juno/utils"
 	"github.com/NethermindEth/juno/vm"
@@ -28,16 +27,20 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 	if err != nil {
 		return nil, err
 	}
-	db, err := pebble.NewMem()
-	if err != nil {
-		return nil, err
-	}
-	txn, err := db.NewTransaction(true)
-	if err != nil {
-		return nil, err
-	}
-	state := core.NewState(txn)
-	err = SetGenesis(state, "data/genesis/NoValidateAccount.sierra.json", "data/genesis/NoValidateAccount.casm.json")
+	//db, err := pebble.NewMem()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//txn, err := db.NewTransaction(true)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//state := core.NewState(txn)
+	//cairoFiles := make(map[string]string)
+	//cairoFiles["data/genesis/NoValidateAccount.sierra.json"] = "data/genesis/NoValidateAccount.casm.json"
+	//cairoFiles["data/genesis/erc20.sierra.json"] = "data/genesis/erc20.casm.json"
+
+	state, err := BuildGenesis([]string{"data/genesis/NoValidateAccount.sierra.json", "data/genesis/erc20.sierra.json"})
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +58,7 @@ func (c *Cairo) HandleCall(call *rpc.FunctionCall, classHash *felt.Felt) ([]*fel
 	return c.vm.Call(&call.ContractAddress, classHash, &call.EntryPointSelector, call.Calldata, 0, uint64(time.Now().Unix()), c.state, c.cfg.Network)
 }
 
-func (c *Cairo) DeployAccount(classHash, contractAddr *felt.Felt) (*felt.Felt, error) {
+func (c *Cairo) DeployAccount(classHash, contractAddr *felt.Felt) (*vm.TransactionTrace, error) {
 	tx := &core.DeployAccountTransaction{
 		DeployTransaction: core.DeployTransaction{
 			ContractAddressSalt: c.acc.pubkey,
@@ -73,7 +76,8 @@ func (c *Cairo) DeployAccount(classHash, contractAddr *felt.Felt) (*felt.Felt, e
 	return c.HandleDeployAccountTx(tx)
 }
 
-func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.Felt, error) {
+func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*vm.TransactionTrace, error) {
+	fmt.Println("------------- DeployAccount TX -------------")
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
@@ -90,11 +94,11 @@ func (c *Cairo) HandleDeployAccountTx(tx *core.DeployAccountTransaction) (*felt.
 	if err != nil {
 		return nil, err
 	}
-	return &traces[0].ConstructorInvocation.CallerAddress, nil
+	return &traces[0], nil
 }
 
 func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (*vm.TransactionTrace, error) {
-	fmt.Println(" Declare TX !!!")
+	fmt.Println("------------- Declare TX -------------")
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
