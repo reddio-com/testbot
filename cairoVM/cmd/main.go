@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"github.com/NethermindEth/juno/rpc"
+	"github.com/NethermindEth/starknet.go/utils"
 	"github.com/davecgh/go-spew/spew"
 	"testbot/cairoVM"
 
@@ -45,6 +48,22 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	callClassHash, err := new(felt.Felt).SetString("0x35eb1d3593b1fe9a8369a023ffa5d07d3b2050841cb75ad6ef00698d9307d10")
+	if err != nil {
+		panic(err)
+	}
 	spew.Dump(trace)
+
+	resp, err := vm.HandleCall(&rpc.FunctionCall{
+		ContractAddress:    *new(felt.Felt).SetUint64(2),
+		EntryPointSelector: *utils.GetSelectorFromNameFelt("get_value"),
+	},
+		callClassHash,
+	)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
 
 }

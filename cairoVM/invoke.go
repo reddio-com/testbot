@@ -22,7 +22,7 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 	// Converting the contractAddress from hex to felt
 	contractAddress := new(felt.Felt).SetUint64(2)
 
-	params := new(felt.Felt).SetUint64(111)
+	params := new(felt.Felt).SetUint64(8088)
 	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call

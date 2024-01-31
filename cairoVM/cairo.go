@@ -61,6 +61,7 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 }
 
 func (c *Cairo) HandleCall(call *rpc.FunctionCall, classHash *felt.Felt) ([]*felt.Felt, error) {
+	fmt.Println("------------ Call ------------")
 	return c.vm.Call(&call.ContractAddress, classHash, &call.EntryPointSelector, call.Calldata, 0, uint64(time.Now().Unix()), c.state, c.cfg.Network)
 }
 
