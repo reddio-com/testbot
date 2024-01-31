@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/NethermindEth/juno/core/felt"
 	"github.com/davecgh/go-spew/spew"
 	"testbot/cairoVM"
+
+	"github.com/NethermindEth/juno/core/felt"
 	// "github.com/NethermindEth/juno/core"
 )
 
@@ -30,6 +31,17 @@ func main() {
 	}
 
 	trace, err = vm.HandleDeclareTx(declareTx, class)
+	if err != nil {
+		panic(err)
+	}
+	spew.Dump(trace)
+
+	invokeTx, err := cairoVM.NewInvoke()
+	if err != nil {
+		panic(err)
+	}
+
+	trace, err = vm.HandleInvokeTx(invokeTx) // Assuming there is a HandleInvokeTx function
 	if err != nil {
 		panic(err)
 	}

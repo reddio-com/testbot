@@ -127,11 +127,15 @@ func (c *Cairo) HandleDeclareTx(tx *core.DeclareTransaction, class core.Class) (
 }
 
 func (c *Cairo) HandleInvokeTx(tx *core.InvokeTransaction) (*vm.TransactionTrace, error) {
+	fmt.Println("---------- Invoke TX ----------")
+	tx.MaxFee = c.MaxFee
+	tx.SenderAddress = &felt.Zero
 	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
 	if err != nil {
 		return nil, err
 	}
 	tx.TransactionHash = txnHash
+
 	sig, err := c.acc.Sign(context.Background(), txnHash)
 	if err != nil {
 		return nil, err

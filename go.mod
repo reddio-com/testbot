@@ -7,7 +7,7 @@ replace github.com/NethermindEth/juno => ./cairoVM/juno
 require (
 	github.com/BurntSushi/toml v1.2.1
 	github.com/NethermindEth/juno v0.3.1
-	github.com/NethermindEth/starknet.go v0.6.0
+	github.com/NethermindEth/starknet.go v0.6.1
 	github.com/sirupsen/logrus v1.9.0
 )
 
