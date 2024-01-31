@@ -81,8 +81,9 @@ func BuildGenesis(classesPaths []string) (*blockchain.PendingStateWriter, error)
 				return nil, fmt.Errorf("set compiled class hash: %v", err)
 			}
 		}
-		
+
 		addrFelt := new(felt.Felt).SetUint64(addr)
+		fmt.Println("Genesis.SetClassHash = ", classHash.String())
 		err = genesisState.SetClassHash(addrFelt, &classHash)
 		if err != nil {
 			return nil, err

@@ -28,7 +28,7 @@ func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, 
 	if err != nil {
 		return nil, nil, err
 	}
-	fmt.Println("ClassHash = ", classHash.String())
+	fmt.Println("Declare ClassHash = ", classHash.String())
 
 	casmClass, err := contracts.UnmarshalCasmClass(casmFileName)
 	if err != nil {
@@ -36,7 +36,7 @@ func NewDeclare(sierraFileName, casmFileName string) (*core.DeclareTransaction, 
 	}
 
 	compClassHash := hash.CompiledClassHash(*casmClass)
-	fmt.Println("CasmClass = ", compClassHash.String())
+	fmt.Println("Declare CasmClass = ", compClassHash.String())
 
 	var nonce felt.Felt
 	nonce.SetUint64(0)
