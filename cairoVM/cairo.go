@@ -132,6 +132,9 @@ func (c *Cairo) HandleInvokeTx(tx *core.InvokeTransaction) (*vm.TransactionTrace
 		return nil, err
 	}
 	tx.TransactionHash = txnHash
+	tx.Nonce = &felt.Zero
+	tx.MaxFee = c.MaxFee
+
 	sig, err := c.acc.Sign(context.Background(), txnHash)
 	if err != nil {
 		return nil, err
