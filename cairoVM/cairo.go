@@ -44,7 +44,7 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 		[]string{
 			"data/genesis/NoValidateAccount.sierra.json",
 			"data/genesis/UniversalDeployer.json",
-			"data/genesis/erc20.sierra.json",
+			"data/genesis/cool_sierra_contract_class.json",
 		},
 	)
 	if err != nil {

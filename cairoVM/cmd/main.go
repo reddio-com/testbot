@@ -22,8 +22,8 @@ func main() {
 
 	// declare TX
 	declareTx, class, err := cairoVM.NewDeclare(
-		"data/cool_sierra_contract_class.json",
-		"data/cool_compiled_class.casm",
+		"data/erc20.sierra.json",
+		"data/erc20.casm.json",
 	)
 	if err != nil {
 		panic(err)
