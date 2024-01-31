@@ -1,9 +1,14 @@
 package cairoVM
 
 import (
+	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/account"
 	"github.com/NethermindEth/starknet.go/rpc"
 	"github.com/NethermindEth/starknet.go/utils"
+)
+
+var (
+	contractMethod string = "set_value"
 )
 
 func NewInvoke(contract string) (rpc.InvokeTxnV1, error) {
@@ -18,14 +23,19 @@ func NewInvoke(contract string) (rpc.InvokeTxnV1, error) {
 		panic(err.Error())
 	}
 
+	randata, err := utils.HexToFelt("0x9184e72a000")
+	if err != nil {
+		panic(err.Error())
+	}
 	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
-		ContractAddress: contractAddress, //contractAddress is the contract that we want to call
-		// 	EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
+		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
+		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
+		Calldata:           []*felt.Felt{randata},                         //this is the data that we want to pass to the function
 	}
 
 	InvokeTx.Calldata = account.FmtCalldataCairo2([]rpc.FunctionCall{FnCall})
 
-	return InvokeTx, FnCall, nil
+	return InvokeTx, nil
 
 }
