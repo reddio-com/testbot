@@ -1,6 +1,7 @@
 package cairoVM
 
 import (
+	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/account"
 	"github.com/NethermindEth/starknet.go/rpc"
@@ -11,7 +12,7 @@ var (
 	contractMethod string = "set_value"
 )
 
-func NewInvoke(contract string) (rpc.InvokeTxnV1, error) {
+func NewInvoke(contract string) (*core.InvokeTransaction, error) {
 	InvokeTx := rpc.InvokeTxnV1{
 		Version: rpc.TransactionV1,
 		Type:    rpc.TransactionType_Invoke,
@@ -36,6 +37,15 @@ func NewInvoke(contract string) (rpc.InvokeTxnV1, error) {
 
 	InvokeTx.Calldata = account.FmtCalldataCairo2([]rpc.FunctionCall{FnCall})
 
-	return InvokeTx, nil
+	tx := core.InvokeTransaction{
+		Nonce:              &felt.Zero,
+		MaxFee:             &felt.Zero,
+		Version:            new(core.TransactionVersion).SetUint64(1),
+		ContractAddress:    contractAddress,
+		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
+		CallData:           InvokeTx.Calldata,
+	}
+
+	return &tx, nil
 
 }
