@@ -12,17 +12,14 @@ var (
 	contractMethod string = "set_value"
 )
 
-func NewInvoke(contract string) (*core.InvokeTransaction, error) {
+func NewInvoke() (*core.InvokeTransaction, error) {
 	InvokeTx := rpc.InvokeTxnV1{
 		Version: rpc.TransactionV1,
 		Type:    rpc.TransactionType_Invoke,
 	}
 
 	// Converting the contractAddress from hex to felt
-	contractAddress, err := utils.HexToFelt(contract)
-	if err != nil {
-		panic(err.Error())
-	}
+	contractAddress := new(felt.Felt).SetUint64(2)
 
 	randata, err := utils.HexToFelt("0x9184e72a000")
 	if err != nil {

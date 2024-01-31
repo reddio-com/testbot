@@ -36,9 +36,7 @@ func main() {
 	}
 	spew.Dump(trace)
 
-	invokeContract := "0x2"
-
-	invokeTx, err := cairoVM.NewInvoke(invokeContract)
+	invokeTx, err := cairoVM.NewInvoke()
 	if err != nil {
 		panic(err)
 	}
