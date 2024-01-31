@@ -80,13 +80,14 @@ func BuildGenesis(classesPaths []string) (*blockchain.PendingStateWriter, error)
 			if err = genesisState.SetCompiledClassHash(&classHash, cairo1Class.Compiled.Hash()); err != nil {
 				return nil, fmt.Errorf("set compiled class hash: %v", err)
 			}
-			addrFelt := new(felt.Felt).SetUint64(addr)
-			err = genesisState.SetClassHash(addrFelt, &classHash)
-			if err != nil {
-				return nil, err
-			}
-			addr++
 		}
+		
+		addrFelt := new(felt.Felt).SetUint64(addr)
+		err = genesisState.SetClassHash(addrFelt, &classHash)
+		if err != nil {
+			return nil, err
+		}
+		addr++
 	}
 
 	//for addrFelt, classHash := range contractsData {
