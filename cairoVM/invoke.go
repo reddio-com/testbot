@@ -27,10 +27,10 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
 		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
-		//Calldata:           []*felt.Felt{randata},                         //this is the data that we want to pass to the function
+		// Calldata:           []*felt.Felt{randata},                                //this is the data that we want to pass to the function
 	}
 
-	txCallData := account.FmtCalldataCairo0([]rpc.FunctionCall{FnCall})
+	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
 
 	fmt.Println("invoke calldata = ", txCallData)
 
