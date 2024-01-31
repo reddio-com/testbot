@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	contractMethod string = "increase_value"
+	contractMethod string = "set_value"
 )
 
 func NewInvoke() (*core.InvokeTransaction, error) {
@@ -22,12 +22,12 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 	// Converting the contractAddress from hex to felt
 	contractAddress := new(felt.Felt).SetUint64(2)
 
-	// randata := new(felt.Felt).SetUint64(111)
+	params := new(felt.Felt).SetUint64(111)
 	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
 		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
-		// Calldata:           []*felt.Felt{randata},                                //this is the data that we want to pass to the function
+		Calldata:           []*felt.Felt{params},                          //this is the data that we want to pass to the function
 	}
 
 	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
