@@ -21,10 +21,7 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 	// Converting the contractAddress from hex to felt
 	contractAddress := new(felt.Felt).SetUint64(2)
 
-	randata, err := utils.HexToFelt("0x9184e72a000")
-	if err != nil {
-		panic(err.Error())
-	}
+	randata := new(felt.Felt).SetUint64(2)
 	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
@@ -34,13 +31,14 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 
 	InvokeTx.Calldata = account.FmtCalldataCairo2([]rpc.FunctionCall{FnCall})
 
+	nonce := new(felt.Felt).SetUint64(1)
 	tx := core.InvokeTransaction{
-		Nonce:              &felt.Zero,
+		Nonce:              nonce,
 		MaxFee:             &felt.Zero,
 		Version:            new(core.TransactionVersion).SetUint64(1),
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
-		CallData:           InvokeTx.Calldata,
+		CallData:           []*felt.Felt{randata},
 	}
 
 	return &tx, nil
