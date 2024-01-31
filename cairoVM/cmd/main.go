@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"testbot/cairoVM"
 
 	"github.com/NethermindEth/juno/core/felt"
-	"github.com/davecgh/go-spew/spew"
 	// "github.com/NethermindEth/juno/core"
 )
 
@@ -19,7 +19,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	spew.Dump(trace)
+	// spew.Dump(trace)
+	fmt.Println("trace type ", trace.Type)
 
 	// declare TX
 	declareTx, class, err := cairoVM.NewDeclare(
@@ -34,7 +35,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	spew.Dump(trace)
+	// spew.Dump(trace)
 
 	invokeTx, err := cairoVM.NewInvoke()
 	if err != nil {
@@ -45,6 +46,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	spew.Dump(trace)
+	// spew.Dump(trace)
 
 }
