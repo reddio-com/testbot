@@ -40,7 +40,13 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 	//cairoFiles["data/genesis/NoValidateAccount.sierra.json"] = "data/genesis/NoValidateAccount.casm.json"
 	//cairoFiles["data/genesis/erc20.sierra.json"] = "data/genesis/erc20.casm.json"
 
-	state, err := BuildGenesis([]string{"data/genesis/NoValidateAccount.sierra.json", "data/genesis/erc20.sierra.json"})
+	state, err := BuildGenesis(
+		[]string{
+			"data/genesis/NoValidateAccount.sierra.json",
+			"data/genesis/UniversalDeployer.json",
+			"data/genesis/erc20.sierra.json",
+		},
+	)
 	if err != nil {
 		return nil, err
 	}
