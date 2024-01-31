@@ -1,6 +1,7 @@
 package cairoVM
 
 import (
+	"fmt"
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/account"
@@ -13,15 +14,15 @@ var (
 )
 
 func NewInvoke() (*core.InvokeTransaction, error) {
-	InvokeTx := rpc.InvokeTxnV1{
-		Version: rpc.TransactionV1,
-		Type:    rpc.TransactionType_Invoke,
-	}
+	//InvokeTx := rpc.InvokeTxnV1{
+	//	Version: rpc.TransactionV1,
+	//	Type:    rpc.TransactionType_Invoke,
+	//}
 
 	// Converting the contractAddress from hex to felt
 	contractAddress := new(felt.Felt).SetUint64(2)
 
-	randata := new(felt.Felt).SetUint64(2)
+	randata := new(felt.Felt).SetUint64(111)
 	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
@@ -29,7 +30,9 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 		Calldata:           []*felt.Felt{randata},                         //this is the data that we want to pass to the function
 	}
 
-	InvokeTx.Calldata = account.FmtCalldataCairo2([]rpc.FunctionCall{FnCall})
+	txCallData := account.FmtCalldataCairo2([]rpc.FunctionCall{FnCall})
+
+	fmt.Println("invoke calldata = ", txCallData)
 
 	nonce := new(felt.Felt).SetUint64(1)
 	tx := core.InvokeTransaction{
@@ -38,7 +41,8 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 		Version:            new(core.TransactionVersion).SetUint64(1),
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
-		CallData:           []*felt.Felt{randata},
+		CallData:           txCallData,
+		// CallData: []*felt.Felt{randata},
 	}
 
 	return &tx, nil
