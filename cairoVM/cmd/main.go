@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"testbot/cairoVM"
+
 	"github.com/NethermindEth/juno/rpc"
 	"github.com/NethermindEth/starknet.go/utils"
 	"github.com/davecgh/go-spew/spew"
-	"testbot/cairoVM"
 
 	"github.com/NethermindEth/juno/core/felt"
 	// "github.com/NethermindEth/juno/core"
@@ -65,5 +66,17 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
+
+	// deployContract TX
+	deployTx, err := cairoVM.NewDeployERC20()
+	if err != nil {
+		panic(err)
+	}
+
+	trace, err = vm.HandleInvokeTx(deployTx) // Assuming there is a HandleInvokeTx function
+	if err != nil {
+		panic(err)
+	}
+	spew.Dump(trace)
 
 }
