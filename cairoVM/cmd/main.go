@@ -68,7 +68,7 @@ func main() {
 	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
 
 	// deployContract TX
-	deployTx, err := cairoVM.NewDeployERC20()
+	deployTx, err := cairoVM.NewDeployCool()
 	if err != nil {
 		panic(err)
 	}

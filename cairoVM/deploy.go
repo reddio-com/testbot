@@ -14,7 +14,7 @@ var (
 	deployContractMethod string = "deployContract"
 )
 
-func NewDeployERC20() (*core.InvokeTransaction, error) {
+func NewDeployCool() (*core.InvokeTransaction, error) {
 	//InvokeTx := rpc.InvokeTxnV1{
 	//	Version: rpc.TransactionV1,
 	//	Type:    rpc.TransactionType_Invoke,
