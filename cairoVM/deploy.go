@@ -59,3 +59,40 @@ func NewDeployERC20() (*core.InvokeTransaction, error) {
 	return &tx, nil
 
 }
+
+func NewDeployInvokeTest() (*core.InvokeTransaction, error) {
+	//InvokeTx := rpc.InvokeTxnV1{
+	//	Version: rpc.TransactionV1,
+	//	Type:    rpc.TransactionType_Invoke,
+	//}
+
+	// Converting the contractAddress from hex to felt
+	// contractAddress := new(felt.Felt).SetUint64(2)
+	contractAddress, _ := new(felt.Felt).SetString("0x7f2f788bcd85c25ece505a4fe359c577be77841c5afb971648af03391e5e834")
+
+	params := new(felt.Felt).SetUint64(9099)
+	// Building the functionCall struct, where :
+	FnCall := rpc.FunctionCall{
+		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
+		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
+		Calldata:           []*felt.Felt{params},                          //this is the data that we want to pass to the function
+	}
+
+	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
+
+	fmt.Println("invoke calldata = ", txCallData)
+
+	nonce := new(felt.Felt).SetUint64(3)
+	tx := core.InvokeTransaction{
+		Nonce:              nonce,
+		MaxFee:             &felt.Zero,
+		Version:            new(core.TransactionVersion).SetUint64(1),
+		ContractAddress:    contractAddress,
+		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
+		CallData:           txCallData,
+		// CallData: []*felt.Felt{randata},
+	}
+
+	return &tx, nil
+
+}

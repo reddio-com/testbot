@@ -79,4 +79,27 @@ func main() {
 	}
 	spew.Dump(trace)
 
+	invokeTx, err = cairoVM.NewDeployInvokeTest()
+	if err != nil {
+		panic(err)
+	}
+
+	trace, err = vm.HandleInvokeTx(invokeTx) // Assuming there is a HandleInvokeTx function
+	if err != nil {
+		panic(err)
+	}
+
+	new_address, _ := new(felt.Felt).SetString("0x7f2f788bcd85c25ece505a4fe359c577be77841c5afb971648af03391e5e834")
+
+	resp, err = vm.HandleCall(&rpc.FunctionCall{
+		ContractAddress:    *new_address,
+		EntryPointSelector: *utils.GetSelectorFromNameFelt("get_value"),
+	},
+		callClassHash,
+	)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
+
 }
