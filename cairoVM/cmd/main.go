@@ -102,7 +102,7 @@ func main() {
 	}
 	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
 
-	deployTx, err = cairoVM.NewDeployERC20()
+	deployTx, err = cairoVM.NewDeployCoolOld()
 	if err != nil {
 		panic(err)
 	}

@@ -2,6 +2,7 @@ package cairoVM
 
 import (
 	"fmt"
+
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/account"
