@@ -140,7 +140,7 @@ func NewDeployERC20() (*core.InvokeTransaction, error) {
 
 	fmt.Println("invoke calldata = ", txCallData)
 
-	nonce := new(felt.Felt).SetUint64(2)
+	nonce := new(felt.Felt).SetUint64(4)
 	tx := core.InvokeTransaction{
 		Nonce:              nonce,
 		MaxFee:             &felt.Zero,

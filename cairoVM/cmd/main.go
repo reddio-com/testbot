@@ -102,4 +102,15 @@ func main() {
 	}
 	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
 
+	deployTx, err = cairoVM.NewDeployERC20()
+	if err != nil {
+		panic(err)
+	}
+
+	trace, err = vm.HandleInvokeTx(deployTx) // Assuming there is a HandleInvokeTx function
+	if err != nil {
+		panic(err)
+	}
+	spew.Dump(trace)
+
 }
