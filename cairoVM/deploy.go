@@ -31,14 +31,14 @@ func NewDeployERC20() (*core.InvokeTransaction, error) {
 
 	calldataLength := new(felt.Felt).SetUint64(0)
 
-	calldata := felt.Felt{}
+	// calldata := felt.Felt{}
 
 	// params := new(felt.Felt).SetUint64(8088)
 	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
-		ContractAddress:    contractAddress,                                                //contractAddress is the contract that we want to call
-		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod),            //this is the function that we want to call
-		Calldata:           []*felt.Felt{classHash, salt, uniq, calldataLength, &calldata}, //this is the data that we want to pass to the function
+		ContractAddress:    contractAddress,                                     //contractAddress is the contract that we want to call
+		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod), //this is the function that we want to call
+		Calldata:           []*felt.Felt{classHash, salt, uniq, calldataLength}, //this is the data that we want to pass to the function
 	}
 
 	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
