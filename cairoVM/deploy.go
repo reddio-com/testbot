@@ -1,8 +1,6 @@
 package cairoVM
 
 import (
-	"fmt"
-
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/starknet.go/account"
@@ -65,10 +63,6 @@ func NewDeployCoolOld() (*core.InvokeTransaction, error) {
 
 	calldataLength := new(felt.Felt).SetUint64(0)
 
-	// calldata := felt.Felt{}
-
-	// params := new(felt.Felt).SetUint64(8088)
-	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                                     //contractAddress is the contract that we want to call
 		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod), //this is the function that we want to call
@@ -76,8 +70,6 @@ func NewDeployCoolOld() (*core.InvokeTransaction, error) {
 	}
 
 	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
-
-	fmt.Println("invoke calldata = ", txCallData)
 
 	tx := core.InvokeTransaction{
 		Version:            new(core.TransactionVersion).SetUint64(1),
