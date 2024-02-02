@@ -39,7 +39,7 @@ func main() {
 	}
 	spew.Dump(trace)
 
-	invokeTx, err := cairoVM.NewInvoke()
+	invokeTx, err := cairoVM.SetCoolValue(cairoVM.CoolContractAddress, 8088)
 	if err != nil {
 		panic(err)
 	}
