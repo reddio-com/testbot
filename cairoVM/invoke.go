@@ -15,16 +15,10 @@ var (
 )
 
 func NewInvoke() (*core.InvokeTransaction, error) {
-	//InvokeTx := rpc.InvokeTxnV1{
-	//	Version: rpc.TransactionV1,
-	//	Type:    rpc.TransactionType_Invoke,
-	//}
-
-	// Converting the contractAddress from hex to felt
 	contractAddress := new(felt.Felt).SetUint64(2)
 
 	params := new(felt.Felt).SetUint64(8088)
-	// Building the functionCall struct, where :
+
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
 		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
@@ -43,7 +37,6 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
 		CallData:           txCallData,
-		// CallData: []*felt.Felt{randata},
 	}
 
 	return &tx, nil
