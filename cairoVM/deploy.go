@@ -114,7 +114,6 @@ func NewDeployCoolOld() (*core.InvokeTransaction, error) {
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod),
 		CallData:           txCallData,
-		// CallData: []*felt.Felt{randata},
 	}
 
 	return &tx, nil
