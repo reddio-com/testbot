@@ -119,16 +119,18 @@ func (c *Cairo) HandleInvokeTx(tx *core.InvokeTransaction) (*vm.TransactionTrace
 	fmt.Println("---------- Invoke TX ----------")
 	tx.MaxFee = c.MaxFee
 	tx.SenderAddress = &felt.Zero
-	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
-	if err != nil {
-		return nil, err
-	}
+
 	nonce, err := c.state.ContractNonce(tx.SenderAddress)
 	if err != nil {
 		return nil, err
 	}
 
 	tx.Nonce = nonce
+
+	txnHash, err := core.TransactionHash(tx, c.cfg.Network)
+	if err != nil {
+		return nil, err
+	}
 
 	tx.TransactionHash = txnHash
 

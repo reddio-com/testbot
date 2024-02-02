@@ -29,10 +29,7 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 
 	fmt.Println("invoke calldata = ", txCallData)
 
-	nonce := new(felt.Felt).SetUint64(1)
 	tx := core.InvokeTransaction{
-		Nonce:              nonce,
-		MaxFee:             &felt.Zero,
 		Version:            new(core.TransactionVersion).SetUint64(1),
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
