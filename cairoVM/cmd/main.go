@@ -50,7 +50,7 @@ func main() {
 		panic(err)
 	}
 
-	callClassHash, err := new(felt.Felt).SetString("0x35eb1d3593b1fe9a8369a023ffa5d07d3b2050841cb75ad6ef00698d9307d10")
+	callClassHash, err := new(felt.Felt).SetString(cairoVM.CoolContractClassHash)
 	if err != nil {
 		panic(err)
 	}
