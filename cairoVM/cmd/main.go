@@ -9,7 +9,6 @@ import (
 	"github.com/davecgh/go-spew/spew"
 
 	"github.com/NethermindEth/juno/core/felt"
-	// "github.com/NethermindEth/juno/core"
 )
 
 func main() {
