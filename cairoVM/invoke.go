@@ -14,10 +14,13 @@ var (
 	contractMethod string = "set_value"
 )
 
-func NewInvoke() (*core.InvokeTransaction, error) {
-	contractAddress := new(felt.Felt).SetUint64(2)
+func SetCoolValue(address string, value uint64) (*core.InvokeTransaction, error) {
+	contractAddress, err := new(felt.Felt).SetString(address)
+	if err != nil {
+		return nil, err
+	}
 
-	params := new(felt.Felt).SetUint64(8088)
+	params := new(felt.Felt).SetUint64(value)
 
 	FnCall := rpc.FunctionCall{
 		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
@@ -37,5 +40,4 @@ func NewInvoke() (*core.InvokeTransaction, error) {
 	}
 
 	return &tx, nil
-
 }
