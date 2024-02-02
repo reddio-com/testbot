@@ -15,35 +15,34 @@ var (
 )
 
 func NewDeployCool() (*core.InvokeTransaction, error) {
-	//InvokeTx := rpc.InvokeTxnV1{
-	//	Version: rpc.TransactionV1,
-	//	Type:    rpc.TransactionType_Invoke,
-	//}
+	contractAddress, err := new(felt.Felt).SetString(UniversalDeployerContractAddress)
 
-	// using UniversalDeploy address
-	contractAddress := new(felt.Felt).SetUint64(1)
+	if err != nil {
+		return nil, err
+	}
 
-	classHash, _ := new(felt.Felt).SetString("0x35eb1d3593b1fe9a8369a023ffa5d07d3b2050841cb75ad6ef00698d9307d10")
+	classHash, err := new(felt.Felt).SetString(CoolContractClassHash)
 
-	salt, _ := new(felt.Felt).SetString("0x53eb1d3593b1fe9a8369a023ffa5d07d3b2050841cb75ad6ef00698d9307d10")
+	if err != nil {
+		return nil, err
+	}
+
+	salt, err := new(felt.Felt).SetString(RandomSalt)
+	if err != nil {
+		return nil, err
+	}
 
 	uniq := new(felt.Felt).SetUint64(1)
 
 	calldataLength := new(felt.Felt).SetUint64(0)
 
-	// calldata := felt.Felt{}
-
-	// params := new(felt.Felt).SetUint64(8088)
-	// Building the functionCall struct, where :
 	FnCall := rpc.FunctionCall{
-		ContractAddress:    contractAddress,                                     //contractAddress is the contract that we want to call
-		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod), //this is the function that we want to call
-		Calldata:           []*felt.Felt{classHash, salt, uniq, calldataLength}, //this is the data that we want to pass to the function
+		ContractAddress:    contractAddress,
+		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod),
+		Calldata:           []*felt.Felt{classHash, salt, uniq, calldataLength},
 	}
 
 	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
-
-	fmt.Println("invoke calldata = ", txCallData)
 
 	nonce := new(felt.Felt).SetUint64(2)
 	tx := core.InvokeTransaction{
@@ -53,9 +52,7 @@ func NewDeployCool() (*core.InvokeTransaction, error) {
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod),
 		CallData:           txCallData,
-		// CallData: []*felt.Felt{randata},
 	}
-
 	return &tx, nil
 
 }

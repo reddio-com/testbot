@@ -8,4 +8,6 @@ const (
 	NoValidateAccountClassHash = "0x24a22c925997bba54caa6ddf38b4d1616c9968e757d6846890b46caa88907e3"
 	UniversalDeployerClassHash = "0x4569ffd48c2a3d455437c16dc843801fb896b1af845bc8bc7ba83ebc4358b7f"
 	CoolContractClassHash      = "0x35eb1d3593b1fe9a8369a023ffa5d07d3b2050841cb75ad6ef00698d9307d10"
+
+	RandomSalt = "0x53eb1d3593b1fe9a8369a023ffa5d07d3b2050841cb75ad6ef00698d9307d10"
 )
