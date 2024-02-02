@@ -44,10 +44,7 @@ func NewDeployCool() (*core.InvokeTransaction, error) {
 
 	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
 
-	nonce := new(felt.Felt).SetUint64(2)
 	tx := core.InvokeTransaction{
-		Nonce:              nonce,
-		MaxFee:             &felt.Zero,
 		Version:            new(core.TransactionVersion).SetUint64(1),
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod),
