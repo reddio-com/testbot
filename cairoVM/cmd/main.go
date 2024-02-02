@@ -78,7 +78,7 @@ func main() {
 	}
 	spew.Dump(trace)
 
-	invokeTx, err = cairoVM.NewDeployInvokeTest()
+	invokeTx, err = cairoVM.SetCoolValue("0x7f2f788bcd85c25ece505a4fe359c577be77841c5afb971648af03391e5e834", 9099)
 	if err != nil {
 		panic(err)
 	}
@@ -112,7 +112,7 @@ func main() {
 	}
 	spew.Dump(trace)
 
-	invokeTx, err = cairoVM.NewDeployInvokeTestCoolOld()
+	invokeTx, err = cairoVM.SetCoolValue("0x77fcc62a59a2160f099493fcd0466c526120320c164a62a72c6ac9931db34d9", 1111)
 	if err != nil {
 		panic(err)
 	}

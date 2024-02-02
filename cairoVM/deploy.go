@@ -57,33 +57,6 @@ func NewDeployCool() (*core.InvokeTransaction, error) {
 
 }
 
-func NewDeployInvokeTest() (*core.InvokeTransaction, error) {
-	contractAddress, _ := new(felt.Felt).SetString("0x7f2f788bcd85c25ece505a4fe359c577be77841c5afb971648af03391e5e834")
-
-	params := new(felt.Felt).SetUint64(9099)
-	// Building the functionCall struct, where :
-	FnCall := rpc.FunctionCall{
-		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
-		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
-		Calldata:           []*felt.Felt{params},                          //this is the data that we want to pass to the function
-	}
-
-	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
-
-	fmt.Println("invoke calldata = ", txCallData)
-
-	tx := core.InvokeTransaction{
-		Version:            new(core.TransactionVersion).SetUint64(1),
-		ContractAddress:    contractAddress,
-		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
-		CallData:           txCallData,
-		// CallData: []*felt.Felt{randata},
-	}
-
-	return &tx, nil
-
-}
-
 func NewDeployCoolOld() (*core.InvokeTransaction, error) {
 	contractAddress := new(felt.Felt).SetUint64(1)
 
@@ -113,32 +86,6 @@ func NewDeployCoolOld() (*core.InvokeTransaction, error) {
 		Version:            new(core.TransactionVersion).SetUint64(1),
 		ContractAddress:    contractAddress,
 		EntryPointSelector: utils.GetSelectorFromNameFelt(deployContractMethod),
-		CallData:           txCallData,
-	}
-
-	return &tx, nil
-
-}
-
-func NewDeployInvokeTestCoolOld() (*core.InvokeTransaction, error) {
-	contractAddress, _ := new(felt.Felt).SetString("0x77fcc62a59a2160f099493fcd0466c526120320c164a62a72c6ac9931db34d9")
-
-	params := new(felt.Felt).SetUint64(1111)
-	// Building the functionCall struct, where :
-	FnCall := rpc.FunctionCall{
-		ContractAddress:    contractAddress,                               //contractAddress is the contract that we want to call
-		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod), //this is the function that we want to call
-		Calldata:           []*felt.Felt{params},                          //this is the data that we want to pass to the function
-	}
-
-	txCallData := account.FmtCallDataCairo2([]rpc.FunctionCall{FnCall})
-
-	fmt.Println("invoke calldata = ", txCallData)
-
-	tx := core.InvokeTransaction{
-		Version:            new(core.TransactionVersion).SetUint64(1),
-		ContractAddress:    contractAddress,
-		EntryPointSelector: utils.GetSelectorFromNameFelt(contractMethod),
 		CallData:           txCallData,
 	}
 
