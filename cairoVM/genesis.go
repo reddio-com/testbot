@@ -3,62 +3,19 @@ package cairoVM
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+
 	"github.com/NethermindEth/juno/adapters/sn2core"
 	"github.com/NethermindEth/juno/blockchain"
 	"github.com/NethermindEth/juno/core"
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/NethermindEth/juno/db"
 	"github.com/NethermindEth/juno/starknet"
-	"os"
 )
 
 func init() {
 	blockchain.RegisterCoreTypesToEncoder()
 }
-
-//func SetGenesis(state *core.State, cairoFiles map[string]string) error {
-//
-//	declaredClasses := make(map[felt.Felt]core.Class)
-//	deployedContracts := make(map[felt.Felt]*felt.Felt)
-//	declaredV1Classes := make(map[felt.Felt]*felt.Felt)
-//	nonces := make(map[felt.Felt]*felt.Felt)
-//	var (
-//		class             core.Class
-//		classHash         *felt.Felt
-//		compiledClassHash *felt.Felt
-//		err               error
-//	)
-//
-//	var addr uint64 = 0
-//
-//	for sierraFileName, casmFileName := range cairoFiles {
-//		class, classHash, err = adaptClassAndHash(sierraFileName)
-//		if err != nil {
-//			return err
-//		}
-//		fmt.Println("genesis classHash = ", classHash.String())
-//		declaredClasses[*classHash] = class
-//		addrFelt := new(felt.Felt).SetUint64(addr)
-//		deployedContracts[*addrFelt] = classHash
-//		casmClass, err := contracts.UnmarshalCasmClass(casmFileName)
-//		if err != nil {
-//			return err
-//		}
-//		compiledClassHash = hash.CompiledClassHash(*casmClass)
-//
-//		declaredV1Classes[*classHash] = compiledClassHash
-//
-//		nonces[*addrFelt] = &felt.Zero
-//		addr++
-//	}
-//
-//	newRoot, err := new(felt.Felt).SetString("0x56f007b0f69daa75af325ecfa0d717bfd4d72bfa102151912fe4a15b9dfd30f")
-//	if err != nil {
-//		return err
-//	}
-//
-//	return state.Update(0, core.EmptyStateDiff(), declaredClasses)
-//}
 
 var AccountClassHash *felt.Felt
 
@@ -91,15 +48,6 @@ func BuildGenesis(classesPaths []string) (*blockchain.PendingStateWriter, error)
 		addr++
 	}
 
-	//for addrFelt, classHash := range contractsData {
-	//	err = genesisState.SetClassHash(&addrFelt, &classHash)
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//}
-
-	//stateDiff, newClasses := genesisState.StateDiffAndClasses()
-	//return state.Update(0, stateDiff, newClasses)
 	return genesisState, nil
 }
 
