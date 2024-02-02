@@ -27,18 +27,6 @@ func NewCairoVM(cfg *Config) (*Cairo, error) {
 	if err != nil {
 		return nil, err
 	}
-	//db, err := pebble.NewMem()
-	//if err != nil {
-	//	return nil, err
-	//}
-	//txn, err := db.NewTransaction(true)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//state := core.NewState(txn)
-	//cairoFiles := make(map[string]string)
-	//cairoFiles["data/genesis/NoValidateAccount.sierra.json"] = "data/genesis/NoValidateAccount.casm.json"
-	//cairoFiles["data/genesis/erc20.sierra.json"] = "data/genesis/erc20.casm.json"
 
 	state, err := BuildGenesis(
 		[]string{
@@ -135,6 +123,13 @@ func (c *Cairo) HandleInvokeTx(tx *core.InvokeTransaction) (*vm.TransactionTrace
 	if err != nil {
 		return nil, err
 	}
+	nonce, err := c.state.ContractNonce(tx.SenderAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	tx.Nonce = nonce
+
 	tx.TransactionHash = txnHash
 
 	sig, err := c.acc.Sign(context.Background(), txnHash)
