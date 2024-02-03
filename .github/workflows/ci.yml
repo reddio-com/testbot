@@ -22,11 +22,7 @@ jobs:
       with:
         go-version: '1.21'
 
-    - uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        profile: minimal
-        override: true
+    - uses: dtolnay/rust-toolchain@stable
 
 #    - name: Cache cargo
 #      uses: Swatinem/rust-cache@v2
