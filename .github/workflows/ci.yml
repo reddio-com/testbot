@@ -22,9 +22,11 @@ jobs:
       with:
         go-version: '1.21'
 
-    - uses: actions/setup-rust@v2
+    - uses: actions-rs/toolchain@v1
       with:
-        rust-version: 1.74.0
+        toolchain: stable
+        profile: minimal
+        override: true
 
 #    - name: Cache cargo
 #      uses: Swatinem/rust-cache@v2
