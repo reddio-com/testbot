@@ -67,7 +67,7 @@ func main() {
 	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
 
 	// deployContract TX
-	deployTx, err := cairoVM.NewDeployCool()
+	deployTx, err := cairoVM.NewDeployCool(cairoVM.CoolContractClassHash)
 	if err != nil {
 		panic(err)
 	}
@@ -101,7 +101,7 @@ func main() {
 	}
 	fmt.Println("call response", utils.FeltToBigInt(resp[0]))
 
-	deployTx, err = cairoVM.NewDeployCoolOld()
+	deployTx, err = cairoVM.NewDeployCool(cairoVM.CoolOldConctractClassHash)
 	if err != nil {
 		panic(err)
 	}
